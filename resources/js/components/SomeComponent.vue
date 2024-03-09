@@ -1,8 +1,8 @@
 <template>
     <div>
         <div>Color: {{ obj.color }}</div>
-        <div>Color: {{ obj.number }}</div>
-        <div>Color: {{ obj.isPublished }}</div>
+        <div>Number: {{ obj.number }}</div>
+        <div>Published: {{ obj.isPublished }}</div>
     </div>
 </template>
 

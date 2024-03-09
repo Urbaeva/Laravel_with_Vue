@@ -12,21 +12,8 @@
 
         <tbody>
         <template v-for="person in people">
-        <tr :class="isEdit(person.id) ? 'd-none' : ''">
-            <th scope="row">{{ person.id }}</th>
-            <td>{{ person.name }}</td>
-            <td>{{ person.age }}</td>
-            <td>{{ person.job }}</td>
-            <td><input class="btn btn-success" type="submit" value="Edit" v-on:click="changePersonId(person.id, person.name, person.age, person.job)"></td>
-            <td><a href="#" @click.prevent="deletePerson(person.id)" class="btn btn-danger">Delete</a></td>
-        </tr>
-        <tr :class="isEdit(person.id) ? '' : 'd-none'">
-            <th  scope="row"></th>
-            <td><input type="text" v-model="name" class="form-control"></td>
-            <td><input type="number" v-model="age" class="form-control"></td>
-            <td><input type="text" v-model="job" class="form-control"></td>
-            <td ><input class="btn btn-success" type="submit" value="Update" v-on:click="updatePerson(person.id)"></td>
-        </tr>
+            <show-component :person="person"></show-component>
+            <edit-component :person="person" :ref="`edit_${person.id}`"></edit-component>
         </template>
         </tbody>
     </table>
@@ -34,10 +21,18 @@
 
 
 <script>
+import EditComponent from "./EditComponent.vue";
+import ShowComponent from "./ShowComponent.vue";
+
 export default {
     name: "IndexComponent",
 
-    data(){
+    components: {
+        ShowComponent,
+        EditComponent
+    },
+
+    data() {
         return {
             people: null,
             editPersonId: null,
@@ -52,48 +47,16 @@ export default {
     },
 
     methods: {
-        getPeople(){
+        getPeople() {
             axios.get('/api/people')
                 .then(response => {
                     this.people = response.data;
                 })
         },
 
-        updatePerson(id){
-            this.editPersonId = null
-            axios.patch(`/api/people/${id}`, {name: this.name, age: this.age, job: this.job})
-                .then(response => {
-                    for (let i = 0; i < this.people.length; i++) {
-                        if (this.people[i].id === id){
-                            this.people[i] = response.data
-                            break
-                        }
-                    }
-                })
-        },
-
-        changePersonId(id, name, age, job){
-            this.editPersonId = id
-            this.name = name
-            this.age = age
-            this.job = job
-        },
-
-        isEdit(id){
+        isEdit(id) {
             return this.editPersonId === id;
         },
-
-
-        deletePerson(id){
-            console.log(id);
-            axios.delete(`/api/people/${id}`)
-                .then(response => {
-                    axios.delete(`/api/people/${id}`)
-                        .then(response => {
-                           this.getPeople()
-                        })
-                })
-        }
     }
 }
 </script>
