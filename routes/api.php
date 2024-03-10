@@ -23,6 +23,7 @@ Route::group(['prefix' => 'people'], function (){
     Route::get('/', [PersonController::class, 'index']);
     Route::post('/', [PersonController::class, 'create']);
     Route::patch('/{person}', [PersonController::class, 'update']);
+    Route::get('/{person}', [PersonController::class, 'show']);
     Route::delete('/{person}', [PersonController::class, 'delete']);
 });
 

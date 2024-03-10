@@ -9,6 +9,7 @@
 
 
                 </div>
+            <router-view></router-view>
                 <post-component></post-component>
             </div>
         </div>
