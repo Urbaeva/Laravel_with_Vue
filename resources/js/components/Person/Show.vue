@@ -13,25 +13,15 @@
 export default {
     name: "Show",
 
-    data(){
-        return {
-            person: null
-        }
-    },
-
     mounted() {
-        this.getPerson()
+        this.$store.dispatch('getPerson', this.$route.params.id)
     },
 
-    methods: {
-        getPerson(){
-            axios.get(`/api/people/${this.$route.params.id}`)
-                .then(res => {
-                    console.log(res)
-                    this.person = res.data.data
-                })
-        },
-    },
+    computed: {
+        person(){
+            return this.$store.getters.person
+        }
+    }
 
 }
 </script>
